@@ -305,6 +305,12 @@ impl<'a> Deref for BytesStart<'a> {
     }
 }
 
+impl<'a> From<BytesStart<'a>> for Cow<'a, [u8]> {
+    fn from(value: BytesStart<'a>) -> Self {
+        value.buf
+    }
+}
+
 #[cfg(feature = "arbitrary")]
 impl<'a> arbitrary::Arbitrary<'a> for BytesStart<'a> {
     fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
@@ -567,6 +573,18 @@ impl<'a> Deref for BytesDecl<'a> {
     }
 }
 
+impl<'a> From<BytesDecl<'a>> for BytesStart<'a> {
+    fn from(value: BytesDecl<'a>) -> Self {
+        value.content
+    }
+}
+
+impl<'a> From<BytesDecl<'a>> for Cow<'a, [u8]> {
+    fn from(value: BytesDecl<'a>) -> Self {
+        value.content.buf
+    }
+}
+
 #[cfg(feature = "arbitrary")]
 impl<'a> arbitrary::Arbitrary<'a> for BytesDecl<'a> {
     fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
@@ -651,6 +669,12 @@ impl<'a> Deref for BytesEnd<'a> {
 
     fn deref(&self) -> &[u8] {
         &self.name
+    }
+}
+
+impl<'a> From<BytesEnd<'a>> for Cow<'a, [u8]> {
+    fn from(value: BytesEnd<'a>) -> Self {
+        value.name
     }
 }
 
@@ -788,6 +812,12 @@ impl<'a> Deref for BytesText<'a> {
 
     fn deref(&self) -> &[u8] {
         &self.content
+    }
+}
+
+impl<'a> From<BytesText<'a>> for Cow<'a, [u8]> {
+    fn from(value: BytesText<'a>) -> Self {
+        value.content
     }
 }
 
@@ -934,6 +964,12 @@ impl<'a> Deref for BytesCData<'a> {
 
     fn deref(&self) -> &[u8] {
         &self.content
+    }
+}
+
+impl<'a> From<BytesCData<'a>> for Cow<'a, [u8]> {
+    fn from(value: BytesCData<'a>) -> Self {
+        value.content
     }
 }
 
